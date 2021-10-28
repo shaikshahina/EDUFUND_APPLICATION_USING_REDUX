@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useRef,useState,useEffect,useContext,createContext,useReducer} from 'react';
+import { useDispatch,useSelector } from 'react-redux';
 import { Grid, Paper, Avatar, Typography, TextField, Button } from '@material-ui/core'
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
 import Radio from '@material-ui/core/Radio';
@@ -12,6 +13,7 @@ import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker
 } from '@material-ui/pickers';
+import {useHistory,Link} from "react-router-dom"
 
 const SignUp = (props) => {
     const paperStyle = { padding: 20, width: 300, margin: "0 auto" }
@@ -19,6 +21,33 @@ const SignUp = (props) => {
     const avatarStyle = { backgroundColor: '#9900cc' }
     const marginTop = { marginTop: 5 }
     const btnstyle = { margin: '8px 0', backgroundColor: '#9900cc', color: 'white' }
+    const dispatch = useDispatch();
+    const {currenUser} = useSelector(state => state.user)
+
+    const [state,setState] = useState({
+        email : '',
+        password : '',
+        userName : '',
+        // gender: '',
+        })
+    const inputChange = (e) => {
+        const {name,value } = e.target;
+        setState(prevState => ({
+          ...setState,
+          [name]: value
+        })
+        )
+      }
+      const submitHandler = (e) =>{
+        e.preventDefault();
+        let {email,password,userName} = e.target.elements
+        email.value = ''
+        password.value = ''
+        userName.value = ''
+        // gender.value = ''
+    
+      }
+    
     return (
         <Grid>
             <Paper style={paperStyle}>
@@ -29,19 +58,19 @@ const SignUp = (props) => {
                     <h2 style={headerStyle}>Sign Up</h2>
 
                 </Grid>
-                <form>
-                    <TextField fullWidth label='Name' placeholder="Enter your name" />
-                    <TextField fullWidth label='Email' placeholder="Enter your email" />
-                    <TextField fullWidth label='Password' placeholder="Enter your password" />
+                <form onSubmit = {submitHandler}>
+                    <TextField fullWidth label='Name' name = "userName" placeholder="Enter your name"  vlaue = {state.userName} onChange = {inputChange} />
+                    <TextField fullWidth label='Email' name = "email" placeholder="Enter your email" vlaue = {state.email} onChange = {inputChange} />
+                    <TextField fullWidth label='Password' name = "password" placeholder="Enter your password" vlaue = {state.password} onChange = {inputChange} />
                     {/* <TextField fullWidth label='Confirm Password' placeholder="Confirm your password" /> */}
-                    <FormControl component="fieldset" style={marginTop}>
+                    {/* <FormControl component="fieldset" style={marginTop}>
                         <FormLabel component="legend">Gender</FormLabel>
                         <RadioGroup aria-label="gender" name="gender" style={{ display: 'initial' }}>
                             <FormControlLabel value="female" control={<Radio />} label="Female" />
                             <FormControlLabel value="male" control={<Radio />} label="Male" />
                         </RadioGroup>
-                    </FormControl>
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    </FormControl> */}
+                    {/* <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDatePicker
                             disableToolbar
                             variant="inline"
@@ -53,7 +82,7 @@ const SignUp = (props) => {
                                 'aria-label': 'change date',
                             }}
                         />
-                    </MuiPickersUtilsProvider>
+                    </MuiPickersUtilsProvider> */}
 
                     <Button type='submit' variant='contained' color='primary' style={btnstyle}>Sign up</Button>
                 </form>
