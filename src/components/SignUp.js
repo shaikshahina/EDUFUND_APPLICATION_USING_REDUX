@@ -1,5 +1,5 @@
-import React, {useRef,useState,useEffect,useContext,createContext,useReducer} from 'react';
-import { useDispatch,useSelector } from 'react-redux';
+import React, { useRef, useState, useEffect, useContext, createContext, useReducer } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Grid, Paper, Avatar, Typography, TextField, Button } from '@material-ui/core'
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
 import Radio from '@material-ui/core/Radio';
@@ -13,41 +13,50 @@ import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker
 } from '@material-ui/pickers';
-import {useHistory,Link} from "react-router-dom"
+import { useHistory, Link } from "react-router-dom"
+import { registerInitiate } from '../redux/actions/userActions';
 
 const SignUp = (props) => {
+    const [state, setState] = useState({
+        email: '',
+        password: '',
+        userName: '',
+    })
+    const dispatch = useDispatch();
+    const { currentUser } = useSelector(state => state.user)
+    const history = useHistory();
+
+    useEffect(() => {
+        if (currentUser) {
+            history.push("/");
+        }
+    }, [currentUser, history])
+
+    const inputChange = (e) => {
+        const { name, value } = e.target;
+
+        setState(prevState => ({
+            ...state,
+            [name]: value
+        })
+        )
+    }
+    const submitHandler = (e) => {
+        e.preventDefault();
+        dispatch(registerInitiate(state.email, state.password, state.userName))
+        setState({
+            email: '',
+            password: '',
+            userName: '',
+        })
+
+    }
     const paperStyle = { padding: 20, width: 300, margin: "0 auto" }
     const headerStyle = { margin: 0 }
     const avatarStyle = { backgroundColor: '#9900cc' }
     const marginTop = { marginTop: 5 }
     const btnstyle = { margin: '8px 0', backgroundColor: '#9900cc', color: 'white' }
-    const dispatch = useDispatch();
-    const {currenUser} = useSelector(state => state.user)
 
-    const [state,setState] = useState({
-        email : '',
-        password : '',
-        userName : '',
-        // gender: '',
-        })
-    const inputChange = (e) => {
-        const {name,value } = e.target;
-        setState(prevState => ({
-          ...setState,
-          [name]: value
-        })
-        )
-      }
-      const submitHandler = (e) =>{
-        e.preventDefault();
-        let {email,password,userName} = e.target.elements
-        email.value = ''
-        password.value = ''
-        userName.value = ''
-        // gender.value = ''
-    
-      }
-    
     return (
         <Grid>
             <Paper style={paperStyle}>
@@ -58,10 +67,10 @@ const SignUp = (props) => {
                     <h2 style={headerStyle}>Sign Up</h2>
 
                 </Grid>
-                <form onSubmit = {submitHandler}>
-                    <TextField fullWidth label='Name' name = "userName" placeholder="Enter your name"  vlaue = {state.userName} onChange = {inputChange} />
-                    <TextField fullWidth label='Email' name = "email" placeholder="Enter your email" vlaue = {state.email} onChange = {inputChange} />
-                    <TextField fullWidth label='Password' name = "password" placeholder="Enter your password" vlaue = {state.password} onChange = {inputChange} />
+                <form onSubmit={submitHandler}>
+                    <TextField fullWidth label='Name' name="userName" placeholder="Enter your name" vlaue={state.userName} onChange={inputChange} />
+                    <TextField fullWidth label='Email' name="email" placeholder="Enter your email" vlaue={state.email} onChange={inputChange} />
+                    <TextField fullWidth label='Password' name="password" placeholder="Enter your password" vlaue={state.password} onChange={inputChange} />
                     {/* <TextField fullWidth label='Confirm Password' placeholder="Confirm your password" /> */}
                     {/* <FormControl component="fieldset" style={marginTop}>
                         <FormLabel component="legend">Gender</FormLabel>
