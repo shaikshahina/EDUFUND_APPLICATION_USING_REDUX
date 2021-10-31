@@ -1,5 +1,6 @@
 import { actionTypes } from '../constants/actionTypes'
 import { auth } from '../../firebase'
+import axios from "axios";
 
 const registerStart = () => ({
     type: actionTypes.REGISTER_START
@@ -42,6 +43,20 @@ const logoutFail = (error) => ({
     payload: error
 })
 
+const fetchmutualfundsDataStart = () => ({
+    type: actionTypes.FETCH_MUTUALFUNDS_DATA_START
+})
+
+const fetchmutualfundsDataSuccess = (data) => ({
+    type: actionTypes.FETCH_MUTUALFUNDS_DATA_SUCCESS,
+    payload: data
+})
+
+const fetchmutualfundsDataFail = (error) => ({
+    type: actionTypes.FETCH_MUTUALFUNDS_DATA_FAILURE,
+    payload: error
+})
+
 export const registerInitiate = (email, password, userName) => {
     return function (dispatch) {
         dispatch(registerStart());
@@ -73,3 +88,23 @@ export const logoutInitiate = () => {
 
     }
 }
+
+export const fetchMutualfundsDataInitiate = () => async (dispatch) => {
+        try {
+            dispatch(fetchmutualfundsDataStart()); 
+        const res = await axios.get('https://api.mfapi.in/mf');
+        dispatch(fetchmutualfundsDataSuccess(res.data))
+        } catch(err){
+          dispatch(fetchmutualfundsDataFail(err.message))
+        }
+     }
+export const fetchMutualDetails = (id) => async (dispatch) => {
+        const response = await axios.get(`https://api.mfapi.in/mf/${id}`);
+        dispatch({ type: actionTypes.FETCH_FUND_DETAILS, payload: response.data });
+      };
+      export const removeFundDetails = () => {
+        return {
+          type: actionTypes.REMOVE_FUND_DETAILS,
+        };
+      };
+

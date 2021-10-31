@@ -1,8 +1,10 @@
 import { combineReducers } from "redux"
-import { userReducer } from "./userReducers"
+import { userReducer ,mutualfundReducers,singleFundReducer} from "./userReducers"
 
 const rootReducer = combineReducers({
-    user: userReducer
+    user: userReducer,
+    mutualFundsData: mutualfundReducers,
+    singleFundDetails: singleFundReducer,
 })
 
 export default rootReducer

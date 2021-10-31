@@ -1,8 +1,9 @@
 import './App.css';
 import Index from './containers/Index';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Home from './components/Home';
 import UserRoute from './components/UserRoute';
+import ProductDetails from './components/ProductDetails';
+import ProductListing from './components/ProductListing';
 
 function App() {
   return (
@@ -10,7 +11,8 @@ function App() {
       <div className="App">
         <Switch>
           <Route exact path="/login" component={Index} />
-          <UserRoute exact path="/" component={Home} />
+          <Route exact path="/" component={ProductListing} />
+          <Route path="/product/:productId" component={ProductDetails} />
         </Switch>
 
       </div>

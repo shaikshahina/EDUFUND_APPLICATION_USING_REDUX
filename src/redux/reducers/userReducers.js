@@ -4,6 +4,11 @@ const initialState = {
     currentUser: null,
     error: null
 }
+const initialFetchingState = {
+    mutualFundsData : [],
+    error: null
+}
+
 const userReducer = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.REGISTER_START:
@@ -40,5 +45,31 @@ const userReducer = (state = initialState, action) => {
 
     }
 }
+
+export const mutualfundReducers = (state = initialFetchingState, action) => {
+    switch(action.type){
+        case actionTypes.FETCH_MUTUALFUNDS_DATA_START:
+            return { ...state}
+        case actionTypes.FETCH_MUTUALFUNDS_DATA_SUCCESS:
+          return { ...state, mutualFundsData : action.payload};
+        case actionTypes.FETCH_MUTUALFUNDS_DATA_FAILURE:
+            return { ...state,error: action.payload}
+        default:
+          return state;
+
+    }
+}
+export const singleFundReducer = (state = {singleFundDetails: {}}, action) => {
+    switch(action.type){
+        case actionTypes.FETCH_FUND_DETAILS:
+            return { ...state,singleFundDetails: action.payload}
+        case actionTypes.REMOVE_FUND_DETAILS:
+            return {};
+        default:
+          return state;
+
+    }
+}
+
 
 export { userReducer };
