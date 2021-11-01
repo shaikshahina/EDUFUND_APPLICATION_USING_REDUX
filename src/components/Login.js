@@ -14,7 +14,11 @@ const Login = ({ handleChange }) => {
         email: '',
         password: '',
     })
-    const { email, password } = state;
+    const msgStyle = { color: 'red' }
+    const [errorMsg, setErrorMsg] = useState('');
+    const [successMsg, setSuccessMsg] = useState('');
+    const email = useRef()
+    const password = useRef()
     const dispatch = useDispatch();
     const { currentUser } = useSelector(state => state.user)
     const history = useHistory();
@@ -27,15 +31,52 @@ const Login = ({ handleChange }) => {
 
     const submitHandler = (e) => {
         e.preventDefault();
-        if (!email || !password) {
-            return
+        const isInValid = validateInput();
+        if (!isInValid) {
+            setSuccessMsg("You're good to go!");
+            dispatch(loginInitiate(state.email, state.password));
+            setState({
+                email: '',
+                password: '',
+            })
         }
-        dispatch(loginInitiate(email, password));
-        setState({
-            email: '',
-            password: '',
-        })
+        else {
+            setSuccessMsg('');
 
+        }
+
+
+    }
+
+    const validateInput = () => {
+        const fields = [
+            {
+                name: 'email',
+                value: state.email,
+                message: 'Email should not be blank.'
+            },
+            {
+                name: 'password',
+                value: state.password,
+                message: 'Password should not be blank.'
+            }
+        ];
+        const isNotFilled = fields.some(field => {
+            if (field.value.trim() === '') {
+                setErrorMsg(field.message);
+                if (field.name === "email") {
+                    email.current.focus()
+                }
+                else {
+                    password.current.focus()
+                }
+
+                return true;
+            }
+            setErrorMsg('');
+            return false;
+        })
+        return isNotFilled
     }
 
     const inputChange = (e) => {
@@ -53,13 +94,16 @@ const Login = ({ handleChange }) => {
     return (
         <Grid>
             <Paper style={paperStyle}>
+                <Grid style={msgStyle}>{successMsg}
+                    {errorMsg}
+                </Grid>
                 <Grid align='center'>
                     <Avatar style={avatarStyle}><LockOutlinedIcon /></Avatar>
                     <h2>Sign In </h2>
                 </Grid>
                 <form onSubmit={submitHandler}>
-                    <TextField fullWidth label='Email' name="email" placeholder="Email Address" vlaue={state.email} onChange={inputChange} />
-                    <TextField fullWidth label='Password' name="password" placeholder="Password" vlaue={state.password} onChange={inputChange} />
+                    <TextField fullWidth label='Email' name="email" placeholder="Email Address" ref={email} vlaue={state.email} onChange={inputChange} />
+                    <TextField fullWidth label='Password' name="password" placeholder="Password" ref={password} vlaue={state.password} onChange={inputChange} />
 
                     <FormControlLabel
                         control={

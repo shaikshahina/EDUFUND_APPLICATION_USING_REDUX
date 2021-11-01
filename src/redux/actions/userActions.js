@@ -90,21 +90,21 @@ export const logoutInitiate = () => {
 }
 
 export const fetchMutualfundsDataInitiate = () => async (dispatch) => {
-        try {
-            dispatch(fetchmutualfundsDataStart()); 
+    try {
+        dispatch(fetchmutualfundsDataStart());
         const res = await axios.get('https://api.mfapi.in/mf');
         dispatch(fetchmutualfundsDataSuccess(res.data))
-        } catch(err){
-          dispatch(fetchmutualfundsDataFail(err.message))
-        }
-     }
+    } catch (err) {
+        dispatch(fetchmutualfundsDataFail(err.message))
+    }
+}
 export const fetchMutualDetails = (id) => async (dispatch) => {
-        const response = await axios.get(`https://api.mfapi.in/mf/${id}`);
-        dispatch({ type: actionTypes.FETCH_FUND_DETAILS, payload: response.data });
-      };
-      export const removeFundDetails = () => {
-        return {
-          type: actionTypes.REMOVE_FUND_DETAILS,
-        };
-      };
+    const response = await axios.get(`https://api.mfapi.in/mf/${id}`);
+    dispatch({ type: actionTypes.FETCH_FUND_DETAILS, payload: response.data });
+};
+export const removeFundDetails = () => {
+    return {
+        type: actionTypes.REMOVE_FUND_DETAILS,
+    };
+};
 
