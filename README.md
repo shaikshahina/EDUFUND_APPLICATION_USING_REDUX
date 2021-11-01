@@ -4,7 +4,7 @@ The Application is deployed in https://create-react-edfund.herokuapp.com/
 
 Click on the link to see the application
 
-### Sample login Details : email: ashika@gmail.com , password : ashika  - Use this credentials to Login instantly or else Sign UP
+### Sample login Details : email: ashika@gmail.com , password : ashika     - Use this credentials to Login instantly or else Sign UP
 
 
 ## Application design
