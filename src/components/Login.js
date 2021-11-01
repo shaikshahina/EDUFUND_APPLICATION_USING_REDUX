@@ -103,7 +103,7 @@ const Login = ({ handleChange }) => {
                 </Grid>
                 <form onSubmit={submitHandler}>
                     <TextField fullWidth label='Email' name="email" placeholder="Email Address" ref={email} vlaue={state.email} onChange={inputChange} />
-                    <TextField fullWidth label='Password' name="password" placeholder="Password" ref={password} vlaue={state.password} onChange={inputChange} />
+                    <TextField fullWidth label='Password' type = "password" name="password" placeholder="Password" ref={password} vlaue={state.password} onChange={inputChange} />
 
                     <FormControlLabel
                         control={
